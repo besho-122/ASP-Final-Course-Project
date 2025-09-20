@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Besho.DAL.Models
+namespace Besho.DAL.DTO.Requests
 {
-   public class Category:BaseModel
+   public class CategoryRequest
     {
-      
-        public string Name { get; set; }
-        
-        
+        public string Name { get;set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Besho.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Besho.DAL.Data
 {
     public class ApplicationDbContext:DbContext
     {
+        public DbSet<Category>Categories { get; set; }  
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
      : base(options)
         {

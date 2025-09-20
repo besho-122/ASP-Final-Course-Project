@@ -1,6 +1,10 @@
 
+using Besho.BLL.Services;
 using Besho.DAL.Data;
+using Besho.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Scalar;
+using Scalar.AspNetCore;
 
 namespace Besho.PL
 {
@@ -11,9 +15,10 @@ namespace Besho.PL
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddScoped<ICategoryService,CategoryService>();
+            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -24,6 +29,8 @@ namespace Besho.PL
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
+
             }
 
             app.UseHttpsRedirection();
