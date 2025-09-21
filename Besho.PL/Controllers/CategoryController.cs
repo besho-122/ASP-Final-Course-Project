@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Besho.DAL.Models;
 using Besho.DAL.Data;
-using Besho.BLL.Services;
 using Besho.DAL.DTO.Requests;
+using Besho.BLL.Services.Interfaces;
 
 namespace Besho.PL.Controllers
 {
@@ -20,12 +20,12 @@ namespace Besho.PL.Controllers
         }
         [HttpGet("")]
         public IActionResult GetAll() {
-            return Ok(_categoryService.GetAllCategories());
+            return Ok(_categoryService.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get([FromRoute]int id) {
-            var category = _categoryService.GetCategoryById(id);
+            var category = _categoryService.GetById(id);
             if (category is null) return NotFound(new {message="category not found"});
             return Ok(category);
         }
@@ -33,7 +33,7 @@ namespace Besho.PL.Controllers
         [HttpPost]
         public IActionResult Create([FromBody]CategoryRequest request)
         {
-           var id= _categoryService.CrateCategory(request);
+           var id= _categoryService.Create(request);
             return CreatedAtAction(nameof(Get),new {id},new { message = "created succesfully",request});
            
         }
@@ -41,7 +41,7 @@ namespace Besho.PL.Controllers
         [HttpPatch("{id}")]
         public IActionResult Update([FromRoute] int id , CategoryRequest request)
         {
-            var updated = _categoryService.UpdateCategory(id, request);
+            var updated = _categoryService.Update(id, request);
             return updated > 0 ? Ok(new {massage="Category Updated Succesfully"}) : NotFound(new {massage="Categort Not Found to Update it "});
 
         }
@@ -56,7 +56,7 @@ namespace Besho.PL.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute]int id)
         {
-            var delete = _categoryService.DeleteCategory(id);
+            var delete = _categoryService.Delete(id);
             return delete > 0 ? Ok(new {message="Category deleted succesfully",delete}) : NotFound("Category Not Found To Delete It");
 
         }

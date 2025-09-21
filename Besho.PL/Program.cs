@@ -1,7 +1,8 @@
-
-using Besho.BLL.Services;
+using Besho.BLL.Services.Classes;
+using Besho.BLL.Services.Interfaces;
 using Besho.DAL.Data;
-using Besho.DAL.Repositories;
+using Besho.DAL.Repositories.Classes;
+using Besho.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Scalar;
 using Scalar.AspNetCore;
@@ -17,6 +18,10 @@ namespace Besho.PL
             // Add services to the container.
             builder.Services.AddScoped<ICategoryService,CategoryService>();
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+
+
+            builder.Services.AddScoped<IBrandService, BrandService>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddControllers();
