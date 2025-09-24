@@ -1,30 +1,33 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Besho.DAL.Models;
-using Besho.DAL.Data;
+﻿using Besho.BLL.Services.Interfaces;
 using Besho.DAL.DTO.Requests;
-using Besho.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Besho.PL.Controllers
+namespace Besho.PL.Areas.Admin.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[area]/[controller]")]
     [ApiController]
-    public class BrandController : ControllerBase
+    [Area("Admin")]
+    [Authorize(Roles ="Admin")]
+    public class BrandsController : ControllerBase
     {
         private readonly IBrandService _brandService;
 
-        public BrandController(IBrandService brandService)
+        public BrandsController(IBrandService brandService)
         {
 
             this._brandService = brandService;
         }
-        [HttpGet("")]
-       
+
+         [HttpGet("")]
+
         public IActionResult GetAll()
         {
-            return Ok(_brandService.GetAll());
+            return Ok(_brandService.GetAll(true));
         }
+
+
 
         [HttpGet("{id}")]
         public IActionResult Get([FromRoute] int id)
@@ -33,6 +36,9 @@ namespace Besho.PL.Controllers
             if (brand is null) return NotFound(new { message = "brand not found" });
             return Ok(brand);
         }
+
+
+
 
         [HttpPost]
         public IActionResult Create([FromBody] BrandRequest request)
@@ -67,11 +73,5 @@ namespace Besho.PL.Controllers
         }
 
 
-
-
-
-
     }
-
-
 }

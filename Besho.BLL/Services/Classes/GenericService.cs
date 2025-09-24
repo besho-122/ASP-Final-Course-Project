@@ -39,9 +39,14 @@ namespace Besho.BLL.Services.Classes
             return Repository.Remove(entity);
         }
 
-        public IEnumerable<TResponse> GetAll()
+        public IEnumerable<TResponse> GetAll(bool onlyActive=false)
         {
             var entities = Repository.GetAll();
+            if (onlyActive) {
+                entities= entities.Where(e=>e.Status==Status.Active);   
+
+
+            }
             return entities.Adapt<IEnumerable<TResponse>>();
         }
 

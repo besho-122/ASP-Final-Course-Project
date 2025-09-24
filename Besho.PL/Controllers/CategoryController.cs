@@ -4,6 +4,7 @@ using Besho.DAL.Models;
 using Besho.DAL.Data;
 using Besho.DAL.DTO.Requests;
 using Besho.BLL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Besho.PL.Controllers
 {
@@ -19,6 +20,7 @@ namespace Besho.PL.Controllers
             this._categoryService = categoryService;
         }
         [HttpGet("")]
+       
         public IActionResult GetAll() {
             return Ok(_categoryService.GetAll());
         }

@@ -21,8 +21,15 @@ namespace Besho.PL.Areas.Identity.Controllers
         {
             var result = await _authenticationService.RegisterAsync(registerRequest);
             return Ok(result);
-        }                       
+        }
 
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserResponse>> Login(LoginRequest registerRequest)
+        {
+            var result = await _authenticationService.LoginAsync(registerRequest);
+            return Ok(result);
+        }
 
     }
 }

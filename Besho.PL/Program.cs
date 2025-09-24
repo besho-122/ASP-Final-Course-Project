@@ -6,11 +6,14 @@ using Besho.DAL.Repositories.Classes;
 using Besho.DAL.Repositories.Interfaces;
 using Besho.DAL.Utils;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar;
 using Scalar.AspNetCore;
+using System.Text;
 
 
 namespace Besho.PL
@@ -35,6 +38,21 @@ namespace Besho.PL
             builder.Services.AddOpenApi();
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+                 {
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuer = false,
+                         ValidateAudience = false,
+                         ValidateLifetime = true,
+                         ValidateIssuerSigningKey = true,
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("jwtOptions")["SercretKet"]))
+                     };
+                 });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
