@@ -8,7 +8,7 @@ namespace Besho.PL.Areas.Customer.Controllers
     [Route("api/[area]/[controller]")]
     [ApiController]
     [Area("Customer")]
-    [Authorize(Roles ="Customer")]
+   
     public class BrandsController : ControllerBase
     {
         private readonly IBrandService _brandService;

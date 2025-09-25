@@ -11,6 +11,6 @@ namespace Besho.BLL.Services.Interfaces
 {
     public interface IBrandService:IGenericService<BrandRequest,BrandResponses,Brand>
     {
-        
+        Task<int> CreateFile(BrandRequest request);
     }
 }

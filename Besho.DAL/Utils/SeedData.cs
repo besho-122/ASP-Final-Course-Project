@@ -49,9 +49,9 @@ namespace Besho.DAL.Utils
             if (!await _context.Brands.AnyAsync())
             {
                 await _context.Brands.AddRangeAsync(
-                    new Brand { Name = "Samsung" },
-                    new Brand { Name = "Apple" },
-                    new Brand { Name = "Nike" }
+                    new Brand { Name = "Samsung",MainImage= "b.png" },
+                    new Brand { Name = "Apple", MainImage = "b.png" },
+                    new Brand { Name = "Nike", MainImage = "b.png" }
                     );
 
             }
@@ -76,21 +76,25 @@ namespace Besho.DAL.Utils
                     Email = "m123456789mmo@gmail.com",
                     FullName = "MohammaBishawi",
                     PhoneNumber = "0569620188",
-                    UserName = "Besho122"
+                    UserName = "Besho122",
+                    EmailConfirmed = true
+
                 };
                 var user2 = new ApplicationUser()
                 {
                     Email = "mohabish224@gmail.com",
                     FullName = "MohammadNihad",
                     PhoneNumber = "0569620198",
-                    UserName = "Besho"
+                    UserName = "Besho",
+                    EmailConfirmed = true
                 };
                 var user3 = new ApplicationUser()
                 {
                     Email = "Hamood@gmail.com",
                     FullName = "Hamoodhas",
                     PhoneNumber = "0569620189",
-                    UserName = "Hamood"
+                    UserName = "Hamood",
+                    EmailConfirmed = true
                 };
                 await _userManager.CreateAsync(user1,"Pass@12122");
                 await _userManager.CreateAsync(user2,"Pass@12122");

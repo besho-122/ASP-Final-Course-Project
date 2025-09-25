@@ -1,8 +1,11 @@
-﻿using Besho.BLL.Services.Interfaces;
+﻿using Azure.Core;
+using Besho.BLL.Services.Interfaces;
 using Besho.DAL.DTO.Requests;
 using Besho.DAL.DTO.Responses;
 using Besho.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +14,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,11 +24,16 @@ namespace Besho.BLL.Services.Classes
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthenticationService(UserManager<ApplicationUser>userManager,IConfiguration configuration )
+        public AuthenticationService(UserManager<ApplicationUser>userManager,IConfiguration configuration ,IEmailSender emailSender,SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _emailSender = emailSender;
+            _signInManager = signInManager;
+        
         }
         public async Task<UserResponse> LoginAsync(LoginRequest loginRequest)
         {
@@ -32,20 +41,52 @@ namespace Besho.BLL.Services.Classes
             if (user is null) {
                 throw new Exception("Invalid email or password");
             }
-            var isPasswordVaild= await _userManager.CheckPasswordAsync(user,loginRequest.Password);
-            if (!isPasswordVaild) {
-
-                throw new Exception("Invalid email or password");
-            }
-          
-            return new UserResponse
+            var result= await _signInManager.CheckPasswordSignInAsync(user, loginRequest.Password,true);
+            if (result.Succeeded)
             {
-                Token = await CreateTokenAsync(user)
+                return new UserResponse
+                {
+                    Token = await CreateTokenAsync(user),
+                };
+            }
 
-            };
+            else if (result.IsLockedOut)
+            {
+                throw new Exception("your account is locked");
+            }
+            else if (result.IsNotAllowed)
+            {
+                throw new Exception("pls confirm your email");
+            }
+           else
+            {
+                throw new Exception("invalid email or password");
+
+            }
+
+
           }
 
-        public async Task<UserResponse> RegisterAsync(RegisterRequest registerRequest)
+        public async Task<string> ConfirmEmail(string token,string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                throw new Exception("user not found");
+
+            }
+            var result = await _userManager.ConfirmEmailAsync(user,token);
+            if (result.Succeeded
+                ) {
+                return "email confirmed succesfully";
+            
+            }
+            return "email confirmation faild";
+        }
+
+
+
+        public async Task<UserResponse> RegisterAsync(RegisterRequest registerRequest,HttpRequest Request)
         {
             var user = new ApplicationUser()
             {
@@ -54,13 +95,22 @@ namespace Besho.BLL.Services.Classes
                 PhoneNumber = registerRequest.PhoneNumber,
                 UserName = registerRequest.UserName
             };
-            var Result =await _userManager.CreateAsync(user,registerRequest.Password);//for encreption 
+            var Result =await _userManager.CreateAsync(user,registerRequest.Password);
             if (Result.Succeeded) {
+                var token=await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var escapeToken = Uri.EscapeDataString(token);
+
+                var emailUrl = $"{Request.Scheme}://{Request.Host}/api/identity/Account/ConfirmEmail?token={escapeToken}&userId={user.Id}";
+
+
+                await _userManager.AddToRoleAsync(user, "Customer");
+                await _emailSender.SendEmailAsync(user.Email, "Welcome to besho store", $"<h1>Hello{user.UserName} </h1>"+$"<a href='{emailUrl}'>confirm</a>");
                 return new UserResponse()
                 {
                     Token = registerRequest.Email,
 
                 };
+
             }
             else
             {
@@ -96,6 +146,53 @@ namespace Besho.BLL.Services.Classes
 
              return new JwtSecurityTokenHandler().WriteToken(token);    
         }
+
+
+
+
+        public async Task<bool>ForgetPassword(ForgetPasswordRequest request) 
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null) throw new Exception("user not found");
+            var random = new Random();
+            var code = random.Next(1000, 9000).ToString();
+            user.CodeResetPassword = code;
+            user.PasswordResetCodeExpiry = DateTime.UtcNow.AddMinutes(15);
+            await _userManager.UpdateAsync(user);
+            await _emailSender.SendEmailAsync(request.Email, "reset password", $"<p>your code is {code}</p>");
+            return true;
+
+
+
+
+        }
+
+
+
+
+
+
+        public async Task<bool> ResetPassword(ResetPasswordRequest request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null) throw new Exception("user not found");
+            if (user.CodeResetPassword != request.Code) return false;
+            if (user.PasswordResetCodeExpiry < DateTime.UtcNow)return false;
+            var token =await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user,token,request.NewPassword);
+            if (result.Succeeded) {
+
+                await _emailSender.SendEmailAsync(request.Email, "RESET PASSWORD", "<h1>your password has been changed sucessfully</h1>");
+                
+                return true; 
+            }
+            return false;
+
+
+        }
+
+
+
 
     }
 }

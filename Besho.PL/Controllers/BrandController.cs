@@ -62,7 +62,7 @@ namespace Besho.PL.Controllers
         public IActionResult Delete([FromRoute] int id)
         {
             var delete = _brandService.Delete(id);
-            return delete > 0 ? Ok(new { message = "Category deleted succesfully", delete }) : NotFound("brand Not Found To Delete It");
+            return delete > 0 ? Ok(new { message = "brand deleted succesfully", delete }) : NotFound("brand Not Found To Delete It");
 
         }
 

@@ -14,10 +14,22 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Scalar.AspNetCore" Version="2.8.5" />
+    <PackageReference Include="Stripe.net" Version="48.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Besho.BLL\Besho.BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\115ee831-7f14-4314-bd74-79c42387d633.jpg" />
+    <None Include="wwwroot\Images\82d10003-5f52-40e2-bfb5-f87732025428.jpg" />
+    <None Include="wwwroot\Images\d9162bd9-6b2f-4cd8-9d21-c8dae961e814.jpg" />
+    <None Include="wwwroot\Images\ddb51b7a-b8f5-4d73-bd44-7eb059ccbc68.jpg" />
+    <None Include="wwwroot\Images\def0aa0e-d71e-45de-a910-440bf0d535f7.jpg" />
+    <None Include="wwwroot\Images\e986da7f-1042-4c35-bc21-7a3eb1ded65d.jpg" />
+    <None Include="wwwroot\Images\eb47b11b-3fc0-4df0-9c1f-977b2a10d952.jpg" />
+    <None Include="wwwroot\Images\ff9656dc-eeed-4b06-9439-424957e469be.jpg" />
   </ItemGroup>
 
 </Project>

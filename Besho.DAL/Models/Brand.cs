@@ -8,7 +8,9 @@ namespace Besho.DAL.Models
 {
   public class Brand :BaseModel
     {
-        public string Name { get; set; }    
+        public string Name { get; set; }
+
+        public string MainImage { get; set; }
     }
 
 }

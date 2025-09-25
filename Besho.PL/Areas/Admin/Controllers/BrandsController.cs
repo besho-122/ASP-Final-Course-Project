@@ -1,4 +1,5 @@
-﻿using Besho.BLL.Services.Interfaces;
+﻿using Besho.BLL.Services.Classes;
+using Besho.BLL.Services.Interfaces;
 using Besho.DAL.DTO.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +10,7 @@ namespace Besho.PL.Areas.Admin.Controllers
     [Route("api/[area]/[controller]")]
     [ApiController]
     [Area("Admin")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin,SuperAdmin")]
     public class BrandsController : ControllerBase
     {
         private readonly IBrandService _brandService;
@@ -40,13 +41,16 @@ namespace Besho.PL.Areas.Admin.Controllers
 
 
 
-        [HttpPost]
-        public IActionResult Create([FromBody] BrandRequest request)
+        [HttpPost("")]
+        public IActionResult Create([FromForm] BrandRequest request)
         {
-            var id = _brandService.Create(request);
-            return CreatedAtAction(nameof(Get), new { id }, new { message = "created succesfully", request });
+
+            var result = _brandService.CreateFile(request);
+            return Ok(result);
+
 
         }
+
 
         [HttpPatch("{id}")]
         public IActionResult Update([FromRoute] int id, BrandRequest request)
@@ -68,7 +72,7 @@ namespace Besho.PL.Areas.Admin.Controllers
         public IActionResult Delete([FromRoute] int id)
         {
             var delete = _brandService.Delete(id);
-            return delete > 0 ? Ok(new { message = "Category deleted succesfully", delete }) : NotFound("brand Not Found To Delete It");
+            return delete > 0 ? Ok(new { message = "brand deleted succesfully", delete }) : NotFound("brand Not Found To Delete It");
 
         }
 
