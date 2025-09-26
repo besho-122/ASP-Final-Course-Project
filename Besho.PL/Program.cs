@@ -105,7 +105,7 @@ namespace Besho.PL
                 app.MapScalarApiReference();
 
              
-            }
+           }
             var scope = app.Services.CreateScope();
             var objectOfSeedData = scope.ServiceProvider.GetRequiredService<ISeedData>();
             await objectOfSeedData.DataSeedingAsync();
