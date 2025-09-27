@@ -27,7 +27,8 @@ namespace Besho.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
+            builder.Services.AddScoped<IOrderService,OrederService>();
             builder.Services.AddScoped<ICategoryService,CategoryService>();
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<IBrandService, BrandService>();
@@ -41,7 +42,9 @@ namespace Besho.PL
             builder.Services.AddScoped <IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<IUserService,UserService>();
+     
 
+           
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

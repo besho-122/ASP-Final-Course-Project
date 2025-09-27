@@ -5,14 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Besho.DAL.Repositories.Interfaces
+namespace Besho.BLL.Services.Interfaces
 {
-    public interface IOrderRepository
+   public  interface IOrderService
     {
         Task<Order>? GetUserByOrderAsync(int orderid);
-        Task <Order>AddAsync(Order order);
+        Task<Order> AddAsync(Order order);
         Task<List<Order>> GetByStatusAsync(OrderStatus status);
         Task<List<Order>> GetOredrByUserAsync(string userId);
         Task<bool> ChangeStatusAsync(int orderId, OrderStatus status);
     }
+
 }
