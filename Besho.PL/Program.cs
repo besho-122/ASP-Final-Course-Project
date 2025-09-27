@@ -84,8 +84,22 @@ namespace Besho.PL
 
 
                  });
+            var userPolicy = "";
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: userPolicy,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();
+    
+                    }
+                    );
 
+                
+                 
+            });
 
 
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
@@ -110,10 +124,13 @@ namespace Besho.PL
             var objectOfSeedData = scope.ServiceProvider.GetRequiredService<ISeedData>();
             await objectOfSeedData.DataSeedingAsync();
             await objectOfSeedData.IdentityDataSeedingAsync();
+
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
+            app.UseCors(userPolicy);
             app.UseAuthorization();
-
+          
+           
             app.UseStaticFiles();
             app.MapControllers();
 
