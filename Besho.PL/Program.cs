@@ -42,9 +42,12 @@ namespace Besho.PL
             builder.Services.AddScoped <IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<IUserService,UserService>();
-     
+            builder.Services.AddScoped<IReviewRepository,ReviewRepository>();
+            builder.Services.AddScoped<IReviewService, BLL.Services.Classes.ReviewService>();
+          
 
-           
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

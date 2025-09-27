@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace Besho.DAL.Models
         public int BrandId {get; set; } 
         public Brand? Brand { get; set; }
 
-        
+        public List<ProductImage> SubImages { get; set; } = new List<ProductImage>();       
+
+
     }
 }

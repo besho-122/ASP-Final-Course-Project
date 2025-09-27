@@ -22,7 +22,7 @@ namespace Besho.PL.Areas.Customer.Controllers
 
         public IActionResult GetAll()
         {
-            return Ok(_productService.GetAll(false));
+            return Ok(_productService.GetAllProduct (Request));
         }
 
         [HttpGet("{id}")]

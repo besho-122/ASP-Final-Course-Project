@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Besho.DAL.Repositories.Interfaces
 {
-   public interface IProductRepository:IGenericRepository<Product>
+   public  interface IReviewRepository
     {
-        Task DecreaseQuantityAsync(List<(int productId,int quantity)>items);
-        List<Product> GetAllProductsWithImage();
+        Task<bool> HasUserReviewProduct(string userId, int productId);
+        Task AddReviewAsync(Review request, string userId);
     }
 }

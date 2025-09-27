@@ -1,6 +1,7 @@
 ﻿using Besho.DAL.DTO.Requests;
 using Besho.DAL.DTO.Responses;
 using Besho.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Besho.BLL.Services.Interfaces
     public interface IProductService:IGenericService<ProductRequest,ProductResponse,Product>
     {
         Task<int> CreateFile(ProductRequest request);
+        Task<List<ProductResponse>> GetAllProduct(HttpRequest request, bool onlyActive = false);
     }
 }

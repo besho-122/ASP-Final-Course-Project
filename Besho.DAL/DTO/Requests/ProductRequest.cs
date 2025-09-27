@@ -1,5 +1,6 @@
 ﻿using Besho.DAL.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,7 @@ namespace Besho.DAL.DTO.Requests
 
         public int BrandId { get; set; }
 
-       
-
+        public List<IFormFile> SubImages { get; set; } = new List<IFormFile>();
 
     }
 }

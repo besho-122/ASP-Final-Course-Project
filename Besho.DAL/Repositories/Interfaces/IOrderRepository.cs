@@ -14,5 +14,6 @@ namespace Besho.DAL.Repositories.Interfaces
         Task<List<Order>> GetByStatusAsync(OrderStatus status);
         Task<List<Order>> GetOredrByUserAsync(string userId);
         Task<bool> ChangeStatusAsync(int orderId, OrderStatus status);
+        Task<bool> UserHasApproveOrderForProductAsync(string userId, int productId);
     }
 }

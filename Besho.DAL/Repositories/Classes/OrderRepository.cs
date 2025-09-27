@@ -54,5 +54,13 @@ namespace Besho.DAL.Repositories.Classes
             return result >0;
         }   
 
+        
+        public async Task<bool> UserHasApproveOrderForProductAsync(string userId, int productId)
+        {
+            return await _context.Orders
+                .Include(o => o.OrderItems)
+                .AnyAsync(o => o.UserId == userId && o.Status == OrderStatus.Approved && o.OrderItems.Any(oi => oi.ProductId == productId));
+        }   
+
     }
 }

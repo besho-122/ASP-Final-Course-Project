@@ -25,7 +25,18 @@ namespace Besho.PL.Areas.Admin.Controllers
            
             var orders = await _orderService.GetByStatusAsync(status);
             return Ok(orders);
-        }   
+        }
+
+
+        [HttpPatch("change-status/{orderid}")]
+        public async Task <IActionResult> ChangeOrderStatus([FromRoute] int orderid, [FromBody] OrderStatus status)
+        {
+            var isChanged = await _orderService.ChangeStatusAsync(orderid, status);
+            if (!isChanged)
+                return BadRequest("Status not changed");
+            return Ok("Status changed successfully");
+        }       
+
 
 
 
