@@ -44,7 +44,7 @@ namespace Besho.PL
             builder.Services.AddScoped<IUserService,UserService>();
             builder.Services.AddScoped<IReviewRepository,ReviewRepository>();
             builder.Services.AddScoped<IReviewService, BLL.Services.Classes.ReviewService>();
-          
+            builder.Services.AddScoped<ReportService>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
