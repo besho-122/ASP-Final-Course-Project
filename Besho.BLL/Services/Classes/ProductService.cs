@@ -41,7 +41,7 @@ namespace Besho.BLL.Services.Classes
             return  _repository.Add(entity);
         }
 
-        public async Task<List<ProductResponse>> GetAllProduct(HttpRequest request,bool onlyActive = false)
+        public async Task<List<ProductResponse>> GetAllProduct(HttpRequest request,bool onlyActive = false,int pageNumber =1 , int pageSize=1)
         {
 
             var products = _repository.GetAllProductsWithImage();
@@ -50,7 +50,9 @@ namespace Besho.BLL.Services.Classes
             {
                 products = products.Where(p => p.Status == Status.Active).ToList();
             }
-            return products.Select(p => new ProductResponse
+
+            var pagedProducts = products.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+            return pagedProducts.Select(p => new ProductResponse
             {
                 Id = p.Id,
                 Name = p.Name,

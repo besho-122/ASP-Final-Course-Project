@@ -13,6 +13,6 @@ namespace Besho.BLL.Services.Interfaces
     public interface IProductService:IGenericService<ProductRequest,ProductResponse,Product>
     {
         Task<int> CreateFile(ProductRequest request);
-        Task<List<ProductResponse>> GetAllProduct(HttpRequest request, bool onlyActive = false);
+        Task<List<ProductResponse>> GetAllProduct(HttpRequest request, bool onlyActive = false, int pageNumber = 1, int pageSize = 1);
     }
 }

@@ -40,7 +40,12 @@ namespace Besho.PL.Areas.Admin.Controllers
 
 
         [HttpGet("")]
-        public IActionResult GetAll() => Ok(_productService.GetAll());
+        public IActionResult GetAll([FromQuery] int pageNumber = 1, [FromQuery]int pageSize=5)
+        {
+            var products=_productService.GetAllProduct(Request, false, pageNumber, pageSize);
+            return Ok(products);
+
+        }
 
 
 
