@@ -17,5 +17,7 @@ namespace Besho.DAL.DTO.Requests
         public string PhoneNumber { get; set;}  
 
         public string Password { get; set;}
+
+
     }
 }

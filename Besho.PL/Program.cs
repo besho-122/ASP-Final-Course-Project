@@ -40,6 +40,9 @@ namespace Besho.PL
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped <IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddScoped<IUserService,UserService>();
+
+
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
