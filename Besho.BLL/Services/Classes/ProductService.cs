@@ -58,6 +58,15 @@ namespace Besho.BLL.Services.Classes
                 Quantity = p.Quantity,
                 MainImage = $"{request.Scheme}://{request.Host}/Images/{p.MainImage}",
                 SubImagesUrls = p.SubImages.Select(img => $"{request.Scheme}://{request.Host}/Images/{img.ImageName}").ToList()
+                ,Reviews=p.Reviews.Select(r=>new ReviewResponse
+                {
+                    Id=r.Id,
+                    Comment = r.Comment,
+                    Rate = r.Rate,
+                    FullName=r.User.FullName
+
+
+                }).ToList(),
             }).ToList();
         
 

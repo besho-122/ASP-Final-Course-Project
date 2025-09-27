@@ -43,7 +43,7 @@ namespace Besho.DAL.Repositories.Classes
 
         public List<Product> GetAllProductsWithImage()
         {
-            return _context.Products.Include(p => p.SubImages).ToList();    
+            return _context.Products.Include(p => p.SubImages).Include(p=>p.Reviews).ThenInclude(p=>p.User).ToList();    
         }
 
     }

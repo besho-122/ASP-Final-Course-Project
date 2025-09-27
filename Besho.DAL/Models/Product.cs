@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Besho.DAL.DTO.Responses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -26,8 +27,8 @@ namespace Besho.DAL.Models
         public int BrandId {get; set; } 
         public Brand? Brand { get; set; }
 
-        public List<ProductImage> SubImages { get; set; } = new List<ProductImage>();       
-
+        public List<ProductImage> SubImages { get; set; } = new List<ProductImage>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
     }
 }
