@@ -9,6 +9,7 @@ namespace Besho.PL.Areas.Identity.Controllers
     [Route("api/[area]/[controller]")]
     [ApiController]
     [Area("Identity")]
+    
     public class AccountController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
